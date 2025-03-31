@@ -1,0 +1,37 @@
+{
+  "name": "upcf",
+  "version": "1.0.0",
+  "description": "ueqt common pcf library",
+  "main": "cli.js",
+  "bin": {
+    "upcf": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ueqt/upcf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ueqt/upcf/issues"
+  },
+  "homepage": "https://github.com/ueqt/upcf#readme",
+  "dependencies": {
+    "@azure/msal-node": "^3.4.1",
+    "chalk": "^5.4.1",
+    "clear": "^0.1.0",
+    "dotenv": "^16.4.7",
+    "figlet": "^1.8.0",
+    "fs-extra": "^11.3.0",
+    "yargs-parser": "^21.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.13.14"
+  }
+}
