@@ -1,4 +1,3 @@
-import { existsSync } from 'fs-extra';
 import { SchemaRequest } from '../libs/schema/request';
 import chalk from 'chalk';
 import { deal } from '../libs/schema/deal';

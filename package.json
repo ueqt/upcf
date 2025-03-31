@@ -2,12 +2,24 @@
   "name": "upcf",
   "version": "1.0.0",
   "description": "ueqt common pcf library",
-  "main": "cli.js",
+  "main": "dist/cjs/cli.js",
+  "module": "dist/esm/cli.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/cli.js",
+      "import": "./dist/esm/cli.js"
+    }
+  },
   "bin": {
     "upcf": "bin/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:types": "tsc -p tsconfig.json",
+    "build": "rimraf ./dist && npm run build:types && rollup -c configs/rollup.config.js",
+    "_____comment": "npm run git -- 'commit-msg'  so you can push and update by a auto way",
+    "git": "npm run build && git add . && git commit -m",
+    "postgit": "npm version patch && npm publish && git push --all"
   },
   "repository": {
     "type": "git",
@@ -28,10 +40,18 @@
     "dotenv": "^16.4.7",
     "figlet": "^1.8.0",
     "fs-extra": "^11.3.0",
+    "rimraf": "^6.0.1",
     "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/clear": "^0.1.4",
+    "@types/figlet": "^1.7.0",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^22.13.14"
+    "@types/node": "^22.13.14",
+    "@types/yargs-parser": "^21.0.3",
+    "rollup": "^4.38.0",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "typescript": "^5.8.2"
   }
 }
