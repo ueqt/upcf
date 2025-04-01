@@ -1,4 +1,5 @@
 import dynamicImportVariables from '@rollup/plugin-dynamic-import-vars';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 import typescript from '@rollup/plugin-typescript';
 import path from 'path';
 import { defineConfig } from 'rollup';
@@ -21,6 +22,7 @@ export default defineConfig([
     input: "src/cli/cli.ts",
     output: { file: "dist/esm/cli.js", format: "esm", inlineDynamicImports: true },
     plugins: [
+      nodePolyfills(),
       dynamicImportVariables({}),
       typescript(typescriptEsmOptions)
     ],
@@ -30,6 +32,7 @@ export default defineConfig([
     input: "src/cli/cli.ts",
     output: { file: "dist/cjs/cli.js", format: "cjs", inlineDynamicImports: true },
     plugins: [
+      nodePolyfills(),
       dynamicImportVariables({}),
       typescript(typescriptCjsOptions)
     ],
