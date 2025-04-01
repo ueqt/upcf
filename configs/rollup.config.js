@@ -1,3 +1,4 @@
+import dynamicImportVariables from '@rollup/plugin-dynamic-import-vars';
 import typescript from '@rollup/plugin-typescript';
 import path from 'path';
 import { defineConfig } from 'rollup';
@@ -15,14 +16,20 @@ const typescriptCjsOptions = {
 export default defineConfig([
   {
     external: ['chalk', 'clear', 'figlet', 'yargs-parser'],
-    input: "src/cli.ts",
-    output: { file: "dist/esm/cli.js", format: "esm" },
-    plugins: [typescript(typescriptEsmOptions)],
+    input: "src/cli/cli.ts",
+    output: { file: "dist/esm/cli.js", format: "esm", inlineDynamicImports: true },
+    plugins: [
+      dynamicImportVariables({}),
+      typescript(typescriptEsmOptions)
+    ],
   },
   {
     external: ['chalk', 'clear', 'figlet', 'yargs-parser'],
-    input: "src/cli.ts",
-    output: { file: "dist/cjs/cli.js", format: "cjs" },
-    plugins: [typescript(typescriptCjsOptions)],
+    input: "src/cli/cli.ts",
+    output: { file: "dist/cjs/cli.js", format: "cjs", inlineDynamicImports: true },
+    plugins: [
+      dynamicImportVariables({}),
+      typescript(typescriptCjsOptions)
+    ],
   },
 ]);
