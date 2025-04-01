@@ -14,7 +14,7 @@ const typescriptCjsOptions = {
   compilerOptions: { declarationDir: 'dist/cjs/types', outDir: 'dist/cjs' },
 };
 
-const externals = ['chalk', 'clear', 'figlet', 'yargs-parser', '@azure/msal-node', 'dotenv', 'fs-extra', 'path'];
+const externals = ['chalk', 'clear', 'figlet', 'yargs-parser', '@azure/msal-node', 'dotenv', 'fs', 'path'];
 
 export default defineConfig([
   {
