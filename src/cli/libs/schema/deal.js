@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
+import { pathExistsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
 import { capitalize, getEnumKey, translate } from './format';
 import { resolve } from 'path';
 
@@ -42,7 +42,7 @@ const deal = async (codeType, attrs, options, logicalName) => {
   } else {
     fp = `../../Plugins/Entity/${modelName}Entity.json`;
   }
-  if (existsSync(fp)) {
+  if (pathExistsSync(fp)) {
     const jsonDatas = readFileSync(fp, { encoding: 'utf-8' });
     excludes = JSON.parse(jsonDatas).excludes;
   }
@@ -203,7 +203,7 @@ const deal = async (codeType, attrs, options, logicalName) => {
           method = 'GetLookupId';
           testValue = 'Guid.NewGuid()';
           if (v.Targets && v.Targets.length === 1) {
-            if (existsSync(`../../Plugins/Entity/${capitalize(v.Targets[0])}Entity.cs`)) {
+            if (pathExistsSync(`../../Plugins/Entity/${capitalize(v.Targets[0])}Entity.cs`)) {
               setValue = `set { entity[${name}] = value != Guid.Empty ? new EntityReference(${capitalize(v.Targets[0])}Entity.LogicalName, value) : (object)null; }`;
             } else {
               setValue = `// NOREF: add ${v.Targets[0]}`;
