@@ -48,7 +48,7 @@ const deal = async (codeType, attrs, options, logicalName) => {
   }
 
   for (const v of attrs) {
-    if(v.DisplayName.UserLocalizedLabel?.Label && v.DisplayName.UserLocalizedLabel?.Label.toUpperCase().startsWith('(TBD)')) {
+    if(v.DisplayName.UserLocalizedLabel?.Label && v.DisplayName.UserLocalizedLabel?.Label.toUpperCase().includes('(TBD)')) {
       // 要删除的列不要用
       continue;
     }
@@ -410,6 +410,9 @@ ${multipleLookupSet}
     let opts = '';
     for (const o of v.OptionSet.Options) {
       if (!o.Label.UserLocalizedLabel) {
+        continue;
+      }
+      if(o.Label.UserLocalizedLabel.Label.includes('(TBD)')) {
         continue;
       }
       let key = getEnumKey(o);
