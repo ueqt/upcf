@@ -1,6 +1,6 @@
 {
   "name": "upcf",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "ueqt common pcf library",
   "main": "dist/cjs/cli.js",
   "module": "dist/esm/cli.js",
