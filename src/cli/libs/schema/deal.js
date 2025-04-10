@@ -48,6 +48,10 @@ const deal = async (codeType, attrs, options, logicalName) => {
   }
 
   for (const v of attrs) {
+    if(v.DisplayName.UserLocalizedLabel?.Label && v.DisplayName.UserLocalizedLabel?.Label.toUpperCase().startsWith('(TBD)')) {
+      // 要删除的列不要用
+      continue;
+    }
     if (v.AttributeOf && v.AttributeTypeName?.Value !== 'ImageType') {
       // 目前只支持ImageType
       continue;
