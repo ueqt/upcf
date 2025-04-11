@@ -75,7 +75,7 @@ const walkSync = (currentDirPath, callback) => {
   const dirs = readdirSync(currentDirPath, { withFileTypes: true });
   for(let i=0;i<dirs.length;i++) {
     const dirent = dirs[i];
-    console.log(dirent.name);
+    // console.log(dirent.name);
     var filePath = join(currentDirPath, dirent.name);
     if (dirent.isFile()) {
       const result = callback(filePath, dirent);
