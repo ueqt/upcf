@@ -1,3 +1,6 @@
+import { readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
+
 /**
  * htmlencode str
  * @param {string} str 
@@ -63,6 +66,33 @@ const addJsonOutput = (jsonOutput, type, v) => {
 };
 
 /**
+ * 遍历目录
+ * @param {string} currentDirPath 
+ * @param {*} callback 
+ * @returns {boolean}
+ */
+const walkSync = (currentDirPath, callback) => {
+  const dirs = readdirSync(currentDirPath, { withFileTypes: true });
+  for(let i=0;i<dirs.length;i++) {
+    const dirent = dirs[i];
+    console.log(dirent.name);
+    var filePath = join(currentDirPath, dirent.name);
+    if (dirent.isFile()) {
+      const result = callback(filePath, dirent);
+      if(result) {
+        return true;
+      }
+    } else if (dirent.isDirectory()) {
+      const result = walkSync(filePath, callback);
+      if(result) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
  * 查找是否使用过
  * @param {string} searchPath 搜索目录
  * @param {string} searchString 搜索字符串
@@ -70,7 +100,14 @@ const addJsonOutput = (jsonOutput, type, v) => {
  * @returns {boolean} 是否使用到 
  */
 const findUsed = (searchPath, searchString, ignorePath) => {
-  return false;
+  return walkSync(searchPath, (/** @type {string} */filePath, dirent) => {
+    for(let i=0;i<ignorePath.length;i++) {
+      if(filePath.startsWith(ignorePath[i])) {
+        return false;
+      }
+    }
+    return readFileSync(filePath, { encoding: 'utf8' }).includes(searchString);
+  });
 }
 
 export { translate, capitalize, getEnumKey, addJsonOutput, findUsed };
