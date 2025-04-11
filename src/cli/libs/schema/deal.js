@@ -60,7 +60,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
       continue;
     }
 
-    let cleanName = `${capitalize(name)}${modelName}`; // 加入modelName方便查找是否使用过
+    let cleanName = capitalize(name);  // `${capitalize(name)}${modelName}`; // 加入modelName方便查找是否使用过
 
     if(cleanMode) {
       // 检查字段名是否使用到，没使用到加入excludes
