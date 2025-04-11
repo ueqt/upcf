@@ -106,7 +106,8 @@ const findUsed = (searchPath, searchString, ignorePath) => {
         return false;
       }
     }
-    return readFileSync(filePath, { encoding: 'utf8' }).includes(searchString);
+    const data = readFileSync(filePath, { encoding: 'utf8' });
+    return searchString.some(s => data.includes(s));
   });
 }
 
