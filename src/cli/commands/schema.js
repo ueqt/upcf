@@ -7,6 +7,8 @@ const command = async (args) => {
   const schemaRequest = new SchemaRequest();
   let cleanMode = false;
   let searchPath = '';
+
+  console.log(chalk.bgGreenBright("args"), args);
   
   if (args['_'].length < 3) {
     console.log(chalk.redBright('必须传入CodeType(ts/cs) LogicalNames!'));
