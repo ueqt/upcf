@@ -101,6 +101,7 @@ const walkSync = (currentDirPath, callback) => {
  */
 const findUsed = (searchPath, searchString, ignorePath) => {
   return walkSync(searchPath, (/** @type {string} */filePath, dirent) => {
+    console.log(dirent);
     for(let i=0;i<ignorePath.length;i++) {
       if(filePath.startsWith(ignorePath[i])) {
         return false;
