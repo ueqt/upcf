@@ -1,15 +1,18 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { capitalize, getEnumKey, translate } from './format';
-import { resolve } from 'path';
+import { addJsonOutput, capitalize, findUsed, getEnumKey, translate } from './format';
+import { resolve, join } from 'path';
 
 /**
  * deal code
- * @param {'ts' | 'cs'} codeType 
+ * @param {'ts' | 'cs'} codeType 文件类型(typescript/C#)
  * @param {*} attrs 
  * @param {*} options 
- * @param {string} logicalName 
+ * @param {string} logicalName 实体逻辑名
+ * @param {boolean} cleanMode 干净模式，会根据实际的使用情况，过滤掉未使用的字段(Enum暂时没处理)
+ * @param {string} relativePath 生成的相对路径
+ * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
  */
-const deal = async (codeType, attrs, options, logicalName) => {
+const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -34,44 +37,45 @@ const deal = async (codeType, attrs, options, logicalName) => {
     'versionnumber',
   ];
 
-  let includes = []; // 因为C#中会校验文件过大，所以允许定义取哪些字段
-  let excludes = [];
-  let fp = '';
-  if (codeType === 'ts') {
-    fp = `./Common/Data/Entity/${modelName}Entity.json`;
-  } else {
-    fp = `../../Plugins/Entity/${modelName}Entity.json`;
-  }
-  if (existsSync(fp)) {
-    const jsonDatas = readFileSync(fp, { encoding: 'utf-8' });
-    excludes = JSON.parse(jsonDatas).excludes;
-  }
+  const jsonOutput = {
+    includes: [],
+    excludes: [],
+    tbds: [],
+    notsupports: [],
+  }; // 因为C#中会校验文件过大，所以允许定义取哪些字段
 
   for (const v of attrs) {
     if(v.DisplayName.UserLocalizedLabel?.Label && v.DisplayName.UserLocalizedLabel?.Label.toUpperCase().includes('(TBD)')) {
       // 要删除的列不要用
+      addJsonOutput(jsonOutput, 'tbds', v);
       continue;
     }
     if (v.AttributeOf && v.AttributeTypeName?.Value !== 'ImageType') {
       // 目前只支持ImageType
+      addJsonOutput(jsonOutput, 'notsupports', v);
       continue;
     }
     let name = v.LogicalName;
     if (codeType === 'ts' && commonNames.includes(name)) {
       continue;
     }
-    if (!excludes.includes(name) || name === logicalName + 'id') {
-      includes.push(name);
-    } else {
-      continue;
+
+    let cleanName = `${capitalize(name)}${modelName}`; // 加入modelName方便查找是否使用过
+
+    if(cleanMode) {
+      // 检查字段名是否使用到，没使用到加入excludes
+      // TODO: ts虽然有treeshake，但是在构建fetchxml的时候，还是少点好
+      if(codeType === 'cs') {
+        const foundUsed = findUsed(searchPath, cleanName, ['Entity', 'Enum']);
+        if(!foundUsed) {
+          addJsonOutput(jsonOutput, 'excludes', v);
+          continue;
+        }
+      }
     }
-    let cleanName = capitalize(name);
-    // 去掉会有重复的
-    // if(cleanName.startsWith('ba_')) {
-    //   cleanName = cleanName.substring(3);
-    // } else if(cleanName.startsWith('msdyn_')) {
-    //   cleanName = cleanName.substring(6);
-    // }
+
+    addJsonOutput(jsonOutput, 'includes', v);
+    
     let type = 'string';
     let method = 'GetStringValue';
     let setValue = '';
@@ -207,7 +211,7 @@ const deal = async (codeType, attrs, options, logicalName) => {
           method = 'GetLookupId';
           testValue = 'Guid.NewGuid()';
           if (v.Targets && v.Targets.length === 1) {
-            if (existsSync(`../../Plugins/Entity/${capitalize(v.Targets[0])}Entity.cs`)) {
+            if (existsSync(join(relativePath, `Entity/${capitalize(v.Targets[0])}Entity.cs`))) {
               setValue = `set { entity[${name}] = value != Guid.Empty ? new EntityReference(${capitalize(v.Targets[0])}Entity.LogicalName, value) : (object)null; }`;
             } else {
               setValue = `// NOREF: add ${v.Targets[0]}`;
@@ -458,15 +462,13 @@ ${opts}
     }
     if (v.OptionSet.IsGlobal) {
       // 全局枚举，新建文件
-      let filePath = '';
+      let filePath = join(relativePath, 'Enum');
       let fileName = '';
       let fileData = '';
       if (codeType === 'ts') {
-        filePath = './Common/Data/Enum';
         fileName = `Enum${name}.ts`;
         fileData = `${currentEnum}`;
       } else {
-        filePath = '../../Plugins/Enum';
         fileName = `Enum${name}.cs`;
         fileData = `// <copyright file="Enum${name}.cs" company="Microsoft">
 // Enum${name}
@@ -492,10 +494,9 @@ namespace Philips.Service.Model
   }
   let result = '';
   // console.log(result);
-  let filePath = '';
+  let filePath = join(relativePath, 'Entity');
   let fileName = '';
   if (codeType === 'ts') {
-    filePath = './Common/Data/Entity';
     fileName = `${modelName}Entity.ts`;
     result = `${imports}
 import { BaseEntity } from "upcf/Data/BaseEntity";
@@ -508,7 +509,6 @@ ${entities}
 ${enums}
 `;
   } else {
-    filePath = '../../Plugins/Entity';
     fileName = `${modelName}Entity.cs`;
     result = `// <copyright file="${modelName}.cs" company="Microsoft">
 // ${modelName}
@@ -543,12 +543,9 @@ ${entities}
 `.replaceAll('\t', '    ').replaceAll('\n', '\r\n');
 
     // #region json
-    const filePathJson = '../../Plugins/Entity';
+    const filePathJson = join(relativePath,'Entity');
     const fileNameJson = `${modelName}Entity.json`;
-    const resultJson = JSON.stringify({
-      includes: includes,
-      excludes: excludes
-    }, null, 2);
+    const resultJson = JSON.stringify(jsonOutput, null, 2);
     console.log(resolve(`${filePathJson}/${fileNameJson}`));
     mkdirSync(resolve(filePathJson), { recursive: true });
     writeFileSync(resolve(`${filePathJson}/${fileNameJson}`), resultJson, { encoding: 'utf-8' });
@@ -593,7 +590,7 @@ ${tests}\t}
 
   if (codeType === 'cs' && enums) {
     // Enum
-    filePath = '../../Plugins/Entity';
+    filePath = join(relativePath, 'Entity');
     fileName = `${modelName}EntityEnum.cs`;
     result = `// <copyright file="${modelName}Enum.cs" company="Microsoft">
 // ${modelName}Enum

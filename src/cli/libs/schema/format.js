@@ -52,4 +52,25 @@ const getEnumKey = (o) => {
   return key;
 };
 
-export { translate, capitalize, getEnumKey };
+/**
+ * 添加到jsonOutput
+ * @param {*} jsonOutput 
+ * @param {'includes' | 'excludes' | 'tbds' | 'notsupports'} type 
+ * @param {*} v 
+ */
+const addJsonOutput = (jsonOutput, type, v) => {
+  jsonOutput[type].push(`${v.LogicalName} // ${v.DisplayName?.UserLocalizedLabel?.Label || ''}`);
+};
+
+/**
+ * 查找是否使用过
+ * @param {string} searchPath 搜索目录
+ * @param {string} searchString 搜索字符串
+ * @param {string[]} ignorePath 忽略的目录
+ * @returns {boolean} 是否使用到 
+ */
+const findUsed = (searchPath, searchString, ignorePath) => {
+  return false;
+}
+
+export { translate, capitalize, getEnumKey, addJsonOutput, findUsed };

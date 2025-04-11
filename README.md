@@ -6,8 +6,12 @@ ueqt common pcf library
 ### Schema
 
 ```zsh
-upcf schema ts <tablelogicalname1> <tablelogicalname2>
-upcf schema cs <tablelogicalname1> <tablelogicalname2>
+# 全量生成
+upcf schema ts <tablelogicalname1> <tablelogicalname2> --path "./"
+upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./"
+# 根据文件使用到的生成
+upcf schema ts <tablelogicalname1> <tablelogicalname2> --path "./" --clean
+upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./" --clean
 ```
 
 ## Installation pacx
