@@ -66,7 +66,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
       // 检查字段名是否使用到，没使用到加入excludes
       // TODO: ts虽然有treeshake，但是在构建fetchxml的时候，还是少点好
       if(codeType === 'cs') {
-        const foundUsed = findUsed(searchPath, cleanName, ['Entity', 'Enum']);
+        const foundUsed = findUsed(searchPath, cleanName, [join(relativePath, 'Entity'), join(relativePath, 'Enum')]);
         if(!foundUsed) {
           addJsonOutput(jsonOutput, 'excludes', v);
           continue;
