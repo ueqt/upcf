@@ -519,6 +519,7 @@ ${enums}
 // <summary>${modelName}</summary>
 
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Xrm.Sdk;
 using ${namespace}Base;
