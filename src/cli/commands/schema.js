@@ -7,6 +7,7 @@ const command = async (args) => {
   const schemaRequest = new SchemaRequest();
   let cleanMode = false;
   let searchPath = '';
+  let namespace = '';
 
   console.log(chalk.bgGreenBright("args"), args);
   
@@ -31,13 +32,22 @@ const command = async (args) => {
   }
   const [_, codeType, ...logicalNames] = args['_'];
   console.log(`codeType: ${codeType}`);
+
+  if(codeType === 'cs') {
+    if(!args.namespace) {
+      console.log(chalk.bgRedBright('--namespace must input in cs type!'));
+      return;
+    }
+    namespace = args.namespace;
+  }
+
   for (const logicalName of logicalNames) {
     console.log(`===== ${logicalName} =====`);
     const attrs = await schemaRequest.request(logicalName, `EntityDefinitions(LogicalName='${logicalName}')/Attributes`);
     const statecodeOptions = await schemaRequest.request(logicalName, `EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet`);
     const statuscodeOptions = await schemaRequest.request(logicalName, `EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet`);
     const picklistOptions = await schemaRequest.request(logicalName, `EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet`);
-    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, cleanMode, args.path, searchPath);
+    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, cleanMode, args.path, searchPath, namespace);
   }
 
 };

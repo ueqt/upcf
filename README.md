@@ -8,10 +8,10 @@ ueqt common pcf library
 ```zsh
 # 全量生成
 upcf schema ts <tablelogicalname1> <tablelogicalname2> --path "./"
-upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./"
+upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./" --namespace "Philips.Service."
 # 根据文件使用到的生成
 upcf schema ts <tablelogicalname1> <tablelogicalname2> --path "./" --clean
-upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./" --clean
+upcf schema cs <tablelogicalname1> <tablelogicalname2> --path "./" --namespace "Philips.Service." --clean
 ```
 
 ## Installation pacx

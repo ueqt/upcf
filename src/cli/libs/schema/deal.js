@@ -11,8 +11,9 @@ import { resolve, join } from 'path';
  * @param {boolean} cleanMode 干净模式，会根据实际的使用情况，过滤掉未使用的字段(Enum暂时没处理)
  * @param {string} relativePath 生成的相对路径
  * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
+ * @param {string} namespace cs模式下的命名空间前缀
  */
-const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath) => {
+const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath, namespace) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -471,13 +472,13 @@ ${opts}
       } else {
         fileName = `Enum${name}.cs`;
         fileData = `// <copyright file="Enum${name}.cs" company="Microsoft">
-// Enum${name}
+// Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>Enum${name}</summary>
 
-namespace Plugins.Enums
+namespace ${namespace}Enums
 {
 \t${currentEnum}
 }
@@ -511,7 +512,7 @@ ${enums}
   } else {
     fileName = `${modelName}Entity.cs`;
     result = `// <copyright file="${modelName}.cs" company="Microsoft">
-// ${modelName}
+// Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
 // <date>${new Date().toLocaleDateString()}</date>
@@ -519,10 +520,10 @@ ${enums}
 
 using System.Runtime.Serialization;
 using Microsoft.Xrm.Sdk;
-using Plugins.Base;
-using Plugins.Enums;
+using ${namespace}Base;
+using ${namespace}Enums;
 
-namespace Plugins.Entities
+namespace ${namespace}Entities
 {
 [DataContract]
 \tinternal class ${modelName}Entity : BaseEntity
@@ -560,7 +561,7 @@ ${entities}
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}EntityTests</summary>
 
-namespace Plugins.Tests.Entity
+namespace ${namespace}Tests.Entities
 {
 \tusing System;
 \tusing global::Plugins.Entities;
@@ -592,13 +593,13 @@ ${tests}\t}
     filePath = join(relativePath, 'Entities');
     fileName = `${modelName}EntityEnum.cs`;
     result = `// <copyright file="${modelName}Enum.cs" company="Microsoft">
-// ${modelName}Enum
+// Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}Enum</summary>
 
-namespace Plugins.Enums
+namespace ${namespace}Enums
 {
 ${enums}
 }  
