@@ -477,7 +477,7 @@ ${opts}
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>Enum${name}</summary>
 
-namespace Plugins.Enum
+namespace Plugins.Enums
 {
 \t${currentEnum}
 }
@@ -522,7 +522,7 @@ using ChinaBusinessApplication.D365.Base.Helpers;
 using Microsoft.Xrm.Sdk;
 using Plugins.Base;
 
-namespace Plugins.Entity
+namespace Plugins.Entities
 {
 [DataContract]
 \tinternal class ${modelName}Entity : BaseEntity
@@ -563,7 +563,7 @@ ${entities}
 namespace Plugins.Tests.Entity
 {
 \tusing System;
-\tusing global::Plugins.Entity;
+\tusing global::Plugins.Entities;
 \tusing global::Plugins.Tests;
 \tusing Microsoft.VisualStudio.TestTools.UnitTesting;
 \tusing Microsoft.Xrm.Sdk;
@@ -598,7 +598,7 @@ ${tests}\t}
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}Enum</summary>
 
-namespace Plugins.Enum
+namespace Plugins.Enums
 {
 ${enums}
 }  
