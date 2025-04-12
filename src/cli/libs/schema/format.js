@@ -101,7 +101,6 @@ const walkSync = (currentDirPath, callback) => {
  */
 const findUsed = (searchPath, searchString, ignorePath) => {
   return walkSync(searchPath, (/** @type {string} */filePath, dirent) => {
-    console.log(filePath, dirent.path, ignorePath, searchString);
     if(!filePath.endsWith('.cs')) {
       // 只看cs文件
       return false;
