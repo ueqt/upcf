@@ -473,11 +473,11 @@ ${opts}
         fileData = `// <copyright file="Enum${name}.cs" company="Microsoft">
 // Enum${name}
 // </copyright>
-// <author>Microsoft</author>
-// <date>2025-01-02</date>
+// <author>Xjs</author>
+// <date>${new Date().toLocaleDateString()}</date>
 // <summary>Enum${name}</summary>
 
-namespace Philips.Service.Model
+namespace Plugins.Enum
 {
 \t${currentEnum}
 }
@@ -513,17 +513,16 @@ ${enums}
     result = `// <copyright file="${modelName}.cs" company="Microsoft">
 // ${modelName}
 // </copyright>
-// <author>Microsoft</author>
-// <date>2025-01-01</date>
+// <author>Xjs</author>
+// <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}</summary>
 
-using System;
-using System.Linq;
 using System.Runtime.Serialization;
 using ChinaBusinessApplication.D365.Base.Helpers;
 using Microsoft.Xrm.Sdk;
+using Plugins.Base;
 
-namespace Philips.Service.Model
+namespace Plugins.Entity
 {
 [DataContract]
 \tinternal class ${modelName}Entity : BaseEntity
@@ -557,14 +556,14 @@ ${entities}
     const resultTest = `// <copyright file="${modelName}EntityTests.cs" company="Microsoft">
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
-// <author>Microsoft</author>
-// <date>2025-01-15</date>
+// <author>Xjs</author>
+// <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}EntityTests</summary>
 
-namespace Philips.Service.Tests.Model
+namespace Plugins.Tests.Entity
 {
 \tusing System;
-\tusing global::Philips.Service.Model;
+\tusing global::Plugins.Entity;
 \tusing global::Plugins.Tests;
 \tusing Microsoft.VisualStudio.TestTools.UnitTesting;
 \tusing Microsoft.Xrm.Sdk;
@@ -595,16 +594,11 @@ ${tests}\t}
     result = `// <copyright file="${modelName}Enum.cs" company="Microsoft">
 // ${modelName}Enum
 // </copyright>
-// <author>Microsoft</author>
-// <date>2025-01-01</date>
+// <author>Xjs</author>
+// <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}Enum</summary>
 
-using System;
-using System.Linq;
-using ChinaBusinessApplication.D365.Base.Helpers;
-using Microsoft.Xrm.Sdk;
-
-namespace Philips.Service.Model
+namespace Plugins.Enum
 {
 ${enums}
 }  
