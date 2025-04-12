@@ -518,6 +518,7 @@ ${enums}
 // <date>${new Date().toLocaleDateString()}</date>
 // <summary>${modelName}</summary>
 
+using System;
 using System.Runtime.Serialization;
 using Microsoft.Xrm.Sdk;
 using ${namespace}Base;
