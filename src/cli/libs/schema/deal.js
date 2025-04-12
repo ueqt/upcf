@@ -569,6 +569,7 @@ namespace ${namespace}Tests.Entities
 \tusing global::Plugins.Tests;
 \tusing Microsoft.VisualStudio.TestTools.UnitTesting;
 \tusing Microsoft.Xrm.Sdk;
+\tusing ${namespace}Entities;
 
 \t/// <summary>
 \t/// This is a test class for MsdynWarehouseEntity and is intended to contain all MsdynWarehouseEntity Unit Tests.
