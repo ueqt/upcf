@@ -212,7 +212,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
           method = 'GetLookupId';
           testValue = 'Guid.NewGuid()';
           if (v.Targets && v.Targets.length === 1) {
-            if (existsSync(join(relativePath, `Entity/${capitalize(v.Targets[0])}Entity.cs`))) {
+            if (existsSync(join(relativePath, `Entities/${capitalize(v.Targets[0])}Entity.cs`))) {
               setValue = `set { entity[${name}] = value != Guid.Empty ? new EntityReference(${capitalize(v.Targets[0])}Entity.LogicalName, value) : (object)null; }`;
             } else {
               setValue = `// NOREF: add ${v.Targets[0]}`;
