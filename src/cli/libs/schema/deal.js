@@ -462,7 +462,7 @@ ${opts}
     }
     if (v.OptionSet.IsGlobal) {
       // 全局枚举，新建文件
-      let filePath = join(relativePath, 'Enum');
+      let filePath = join(relativePath, 'Enums');
       let fileName = '';
       let fileData = '';
       if (codeType === 'ts') {
@@ -494,7 +494,7 @@ namespace Plugins.Enums
   }
   let result = '';
   // console.log(result);
-  let filePath = join(relativePath, 'Entity');
+  let filePath = join(relativePath, 'Entities');
   let fileName = '';
   if (codeType === 'ts') {
     fileName = `${modelName}Entity.ts`;
@@ -542,7 +542,7 @@ ${entities}
 `.replaceAll('\t', '    ').replaceAll('\n', '\r\n');
 
     // #region json
-    const filePathJson = join(relativePath,'Entity');
+    const filePathJson = join(relativePath,'Entities');
     const fileNameJson = `${modelName}Entity.json`;
     const resultJson = JSON.stringify(jsonOutput, null, 2);
     console.log(resolve(`${filePathJson}/${fileNameJson}`));
@@ -551,7 +551,7 @@ ${entities}
     // #endregion
 
     // #region unittest
-    const filePathTest = '../../Tests/Entity';
+    const filePathTest = '../../Tests/Entities';
     const fileNameTest = `${modelName}EntityTests.cs`;
     const resultTest = `// <copyright file="${modelName}EntityTests.cs" company="Microsoft">
 // Copyright (c) Microsoft. All rights reserved.
@@ -589,7 +589,7 @@ ${tests}\t}
 
   if (codeType === 'cs' && enums) {
     // Enum
-    filePath = join(relativePath, 'Entity');
+    filePath = join(relativePath, 'Entities');
     fileName = `${modelName}EntityEnum.cs`;
     result = `// <copyright file="${modelName}Enum.cs" company="Microsoft">
 // ${modelName}Enum
