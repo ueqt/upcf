@@ -566,11 +566,11 @@ ${entities}
 namespace ${namespace}Tests.Entities
 {
 \tusing System;
-\tusing global::Plugins.Entities;
 \tusing global::Plugins.Tests;
 \tusing Microsoft.VisualStudio.TestTools.UnitTesting;
 \tusing Microsoft.Xrm.Sdk;
 \tusing ${namespace}Entities;
+\tusing ${namespace}Enums;
 
 \t/// <summary>
 \t/// This is a test class for MsdynWarehouseEntity and is intended to contain all MsdynWarehouseEntity Unit Tests.
