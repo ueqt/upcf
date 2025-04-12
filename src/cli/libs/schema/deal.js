@@ -518,9 +518,9 @@ ${enums}
 // <summary>${modelName}</summary>
 
 using System.Runtime.Serialization;
-using ChinaBusinessApplication.D365.Base.Helpers;
 using Microsoft.Xrm.Sdk;
 using Plugins.Base;
+using Plugins.Enums;
 
 namespace Plugins.Entities
 {
