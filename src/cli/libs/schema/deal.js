@@ -475,7 +475,7 @@ ${opts}
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
-// <date>${new Date().toLocaleDateString()}</date>
+// <date>2025-01-01</date>
 // <summary>Enum${name}</summary>
 
 namespace ${namespace}Enums
@@ -515,7 +515,7 @@ ${enums}
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
-// <date>${new Date().toLocaleDateString()}</date>
+// <date>2025-01-01</date>
 // <summary>${modelName}</summary>
 
 using System;
@@ -560,7 +560,7 @@ ${entities}
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
-// <date>${new Date().toLocaleDateString()}</date>
+// <date>2025-01-01</date>
 // <summary>${modelName}EntityTests</summary>
 
 namespace ${namespace}Tests.Entities
@@ -599,7 +599,7 @@ ${tests}\t}
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 // <author>Xjs</author>
-// <date>${new Date().toLocaleDateString()}</date>
+// <date>2025-01-01</date>
 // <summary>${modelName}Enum</summary>
 
 namespace ${namespace}Enums
