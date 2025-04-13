@@ -438,7 +438,7 @@ ${multipleLookupSet}
     let currentEnum = '';
     if (codeType === 'ts') {
       if (v.OptionSet.IsGlobal) {
-        imports += `import { Enum${name} } from "../Enum/Enum${name}";
+        imports += `import { Enum${name} } from "../Enums/Enum${name}";
 `;
       }
       currentEnum = `
