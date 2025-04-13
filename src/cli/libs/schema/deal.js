@@ -20,6 +20,8 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
   let imports = '';
   let modelName = capitalize(logicalName);
 
+  // 日期写死，防止每次更新生成一堆变化
+
   const commonNames = [
     'createdby',
     'createdon',
