@@ -31,7 +31,8 @@ const getWebResourceType = (filepath) => {
 const updateRemoteFromLocalAsync = async (schemaRequest, filepath, prefix, solutionUniqueName) => {
   console.log(chalk.bgGreenBright(`Updating webresources...  ${filepath}`));
 
-  const testPath = filepath; // join('/Users/ueqt/Documents/philips/Philips.Service/WebResources', filepath);
+  const testPath = filepath; 
+  // const testPath = join('/Users/ueqt/Documents/philips/Philips.Service/WebResources', filepath);
 
   const fileContent = readFileSync(testPath, { encoding: 'base64' });
   // console.log(fileContent);
@@ -44,7 +45,7 @@ const updateRemoteFromLocalAsync = async (schemaRequest, filepath, prefix, solut
     webresouceid = foundWebResouces[0].webresourceid;
     console.log('webresouceid: ', webresouceid);
     console.log('to be updated...');
-    await schemaRequest.request(`webresourceset(${webresouceid})`, { method: 'PATCH', body: { content: fileContent } });
+    await schemaRequest.request(`webresourceset(${webresouceid})`, { method: 'PATCH', body: { content: fileContent }, noNeedValue: true });
   } else {
     // 创建
     console.log('to be created...');
@@ -56,10 +57,8 @@ const updateRemoteFromLocalAsync = async (schemaRequest, filepath, prefix, solut
     } });
     console.log(result);
     webresouceid = result.webresourceid;
-
-    await addSolutionComponent(webresouceid, 61, solutionUniqueName);
   }
-
+  await addSolutionComponent(webresouceid, 61, solutionUniqueName);
   return webresouceid;
 };
 

@@ -17,7 +17,7 @@
   "scripts": {
     "build:types": "tsc -p tsconfig.json",
     "build": "rimraf ./dist && npm run build:types && rollup -c configs/rollup.config.js",
-    "test": "npm run build && node dist/esm/cli.js webresource PartsOrderLine/Ribbon.js --solution Service365_Patch_43efb18a",
+    "test": "npm run build && node dist/esm/cli.js webresource PartsOrderLine/Ribbon.js --solution Service365_Patch_ed58b8e3",
     "_____comment": "npm run git -- 'commit-msg'  so you can push and update by a auto way",
     "git": "npm run build && git add . && git commit -m",
     "postgit": "npm version patch && npm publish && git push --all"

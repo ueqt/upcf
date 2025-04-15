@@ -45,7 +45,7 @@ ${webresources.length > 0 ? '<webresources>' + webresources.map(c => '<webresour
 
 const addSolutionComponent = async (entityId, entityType, solutionUniqueName) => {
   // https://stackoverflow.com/questions/55654055/how-to-add-an-entity-to-a-solution-with-javascript-using-web-api-action-addsolut
-  const param = { 
+  const parameters = { 
     'ComponentId':  entityId , // newly created entity id 
     'ComponentType': entityType, // entity type // https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/reference/solutioncomponent?view=dataverse-latest&viewFallbackFrom=dynamics-ce-odata-9
     'SolutionUniqueName': solutionUniqueName,  // solution name (without spaces)
