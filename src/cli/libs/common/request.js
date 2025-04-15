@@ -51,14 +51,17 @@ class SchemaRequest {
 
   /**
    * Do Request
-   * @param {string} logicalName 
    * @param {string} action 
-   * @param {'GET' | 'POST'} method 
-   * @param {*} body 
-   * @param {*} otherHeaders 
+   * @param {*} parameters
    * @returns {*} result
    */
-  async request(logicalName, action, method='GET', body = undefined, otherHeaders = {}) {
+  async request(action, parameters = {}) {
+    const method = parameters.method || 'GET';
+    const body = parameters.body;
+    const otherHeaders = parameters.otherHeaders || {};
+    const noNeedValue = parameters.noNeedValue;
+    const showUrl = parameters.showUrl;
+
     const bearer = await this.getToken();
     const headers = {
       'Authorization': bearer,
@@ -75,15 +78,23 @@ class SchemaRequest {
     // console.log(options);
 
     try {
-      const response = await fetch(`${process.env.VITE_BaseUrl}/api/data/v9.2/${action}`, options);
+      const url = `${process.env.VITE_BaseUrl}/api/data/v9.2/${action}`;
+      if(showUrl) {
+        console.log(`request url: `, url);
+      }
+      const response = await fetch(url, options);
       // console.log(response.status);
       if (response.status === 204) {
         // callback(response.statusText);
-        return;
+        return null;
       } else {
         const result = await response.json();
         // console.log(result);
-        return result.value;
+        if(noNeedValue) {
+          return result;
+        } else {
+          return result.value;
+        }
       }
     } catch (error) {
       console.log(chalk.redBright(error));

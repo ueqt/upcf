@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { addJsonOutput, capitalize, findUsed, getEnumKey, translate } from './format';
 import { resolve, join } from 'path';
 
