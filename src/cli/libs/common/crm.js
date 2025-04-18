@@ -35,12 +35,11 @@ ${webresources.length > 0 ? '<webresources>' + webresources.map(c => '<webresour
   
   const schemaRequest = new SchemaRequest();
 
-  const result = await schemaRequest.request('PublishXml', {
+  await schemaRequest.request('PublishXml', {
     method: 'POST', 
     body: parameters,
     noNeedValue: true,
   });
-  console.log(result);
 };
 
 const addSolutionComponent = async (entityId, entityType, solutionUniqueName) => {

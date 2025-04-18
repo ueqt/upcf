@@ -37,9 +37,21 @@ const updateRemoteFromLocalAsync = async (schemaRequest, filepath, prefix, solut
   const fileContent = readFileSync(testPath, { encoding: 'base64' });
   // console.log(fileContent);
   const webresoucename = `${prefix}_/${filepath}`;
-  const foundWebResouces = await schemaRequest.request(`webresourceset?$filter=name eq '${webresoucename}'`);
+  let foundWebResouces = await schemaRequest.request(`webresourceset?$filter=name eq '${webresoucename}'`);
   // console.log(foundWebResouces);
   let webresouceid = '';
+  if(!foundWebResouces || foundWebResouces.length <= 0) {
+    // 创建
+    console.log('to be created...');
+    await schemaRequest.request(`webresourceset`, { method: 'POST', body: {
+      name: webresoucename,
+      displayname: webresoucename,
+      webresourcetype: getWebResourceType(filepath),
+      content: fileContent
+    } });
+    foundWebResouces = await schemaRequest.request(`webresourceset?$filter=name eq '${webresoucename}'`);
+  }
+
   if(foundWebResouces && foundWebResouces.length > 0) {
     // 更新
     webresouceid = foundWebResouces[0].webresourceid;
@@ -47,16 +59,7 @@ const updateRemoteFromLocalAsync = async (schemaRequest, filepath, prefix, solut
     console.log('to be updated...');
     await schemaRequest.request(`webresourceset(${webresouceid})`, { method: 'PATCH', body: { content: fileContent }, noNeedValue: true });
   } else {
-    // 创建
-    console.log('to be created...');
-    const result = await schemaRequest.request(`webresourceset`, { method: 'POST', body: {
-      name: webresoucename,
-      displayname: webresoucename,
-      webresourcetype: getWebResourceType(filepath),
-      content: fileContent
-    } });
-    console.log(result);
-    webresouceid = result.webresourceid;
+    throw new Error('创建失败!');
   }
   await addSolutionComponent(webresouceid, 61, solutionUniqueName);
   return webresouceid;
@@ -81,6 +84,7 @@ const deal = async (filepath, solutionUniqueName) => {
   const webresouceid = await updateRemoteFromLocalAsync(schemaRequest, filepath, prefix, solutionUniqueName);
   console.log(`webresouceid: `, webresouceid);
   await publishXml([], [webresouceid]);
+  console.log('Publish success');
 }
 
 export { deal };
