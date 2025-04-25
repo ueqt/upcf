@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import { join } from 'path';
 import shelljs from 'shelljs';
 import * as fixxml from '../fixxml/deal';
 
