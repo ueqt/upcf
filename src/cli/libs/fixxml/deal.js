@@ -1,4 +1,5 @@
 import { existsSync, readdirSync, renameSync } from 'fs';
+import { join } from 'path';
 
 const deal = async () => {
 
