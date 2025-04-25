@@ -10,7 +10,6 @@ const command = async (args) => {
     return;
   }
   const [_, control] = args['_'];
-  console.log(`control: ${control}`);
   await deal(control, args.isglobal);
 };
 

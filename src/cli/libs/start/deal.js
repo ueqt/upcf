@@ -4,8 +4,7 @@ import * as bakxml from '../bakxml/deal';
 
 const deal = async (control, isGlobal = false) => {
 
-  console.log(`control: ${control}`);
-  console.log(`isGlobal: ${!!isGlobal}`);
+  console.log(`start: control: ${control}; isGlobal: ${!!isGlobal}`);
 
   // 修改StartTask，只启动当前控件，同时只能启动一个控件
   const startTask = readFileSync('./node_modules/pcf-scripts/tasks/startTask.js', {encoding: 'utf8'});
@@ -63,7 +62,7 @@ const deal = async (control, isGlobal = false) => {
   // writeFileSync(`./${control}/ControlManifest.Input.xml`, datas.join('\n'), {encoding: 'utf8'});
 
   // 把其他control的ControlManifest.Input.xml改名，否则也会启动
-  bakxml.deal(control);
+  await bakxml.deal(control);
 
   // 启动pcf
   shelljs.exec(`npm run startpcf watch ${control}`);

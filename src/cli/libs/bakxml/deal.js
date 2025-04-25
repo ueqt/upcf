@@ -2,6 +2,7 @@ import { existsSync, readdirSync, renameSync } from 'fs';
 
 const deal = async (ignoreControl) => {
 
+  console.log(`bakxml: ${ignoreControl}`);
   const controls = readdirSync('.');
   for (let i = controls.length - 1; i >= 0; i--) {
     if (controls[i] === ignoreControl) {

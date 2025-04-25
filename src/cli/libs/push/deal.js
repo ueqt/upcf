@@ -4,9 +4,7 @@ import * as fixxml from '../fixxml/deal';
 
 const deal = async (prefix, control, isGlobal = false) => {
 
-  console.log(`prefix: ${prefix}`);
-  console.log(`control: ${control}`);
-  console.log(`isGlobal: ${!!isGlobal}`);
+  console.log(`push: prefix: ${prefix}; control: ${control}; isGlobal: ${!!isGlobal}`);
 
   const buildContext = readFileSync('./node_modules/pcf-scripts/buildContext.js', { encoding: 'utf8' });
   let datas = buildContext.split('\n');
@@ -73,8 +71,8 @@ const deal = async (prefix, control, isGlobal = false) => {
     renameSync(join('.', '.envs', '.env.dev'), join('.', '.envs', '.env.dev.bak'));
   }
 
-  process.on('beforeExit', (_code) => {
-    fixxml.deal();
+  process.on('beforeExit', async (_code) => {
+    await fixxml.deal();
   });
 
   try {
@@ -82,7 +80,7 @@ const deal = async (prefix, control, isGlobal = false) => {
     shelljs.exec(`pac pcf push --publisher-prefix ${prefix}`);
   } catch (err) {
     console.error(err);
-    fixxml.deal();
+    await fixxml.deal();
   }
 
 }
