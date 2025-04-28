@@ -459,6 +459,7 @@ ${opts}
 \t\t/// <remarks>${translate(v.OptionSet.DisplayName?.UserLocalizedLabel?.Label)}</remarks>
 \t\tpublic enum Enum${name}
 \t\t{
+\t\t\t/// <summary>null</summary>
 \t\t\tUeqtEmpty = -1,
 ${opts}
 \t\t}
