@@ -314,7 +314,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
           // Not implementation
         } else {
           getValue = `get { return this.GetVirtualValue(${name}); }`;
-          setValue = `set { if(!string.IsNullOrWhiteSpace(value)) { entity[${name}] = Convert.FromBase64String(value); }`;
+          setValue = `set { if(!string.IsNullOrWhiteSpace(value)) { entity[${name}] = Convert.FromBase64String(value); } }`;
         }
         break;
       default:
