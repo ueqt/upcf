@@ -1,4 +1,5 @@
 import { SchemaRequest } from '../common/request';
+import { writeFileSync } from 'fs';
 
 const deal = async (solutionid) => {
   const schemaRequest = new SchemaRequest(); 
@@ -39,12 +40,14 @@ const deal = async (solutionid) => {
       }
     );
 
-    console.log(customapi);
-    return;
-    // result.TypeName = customapi.
+    result.TypeName = customapi['_plugintypeid_value@OData.Community.Display.V1.FormattedValue'];
+    result.Entity = customapi['boundentitylogicalname'];
+    result.Developer = customapi['_createdby_value@OData.Community.Display.V1.FormattedValue'];
 
     results.push(result);
   }
+
+  writeFileSync('./customapis.json', JSON.stringify(results, null, 2), { encoding: 'utf8' });
 }
 
 export { deal };
