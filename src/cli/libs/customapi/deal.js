@@ -31,7 +31,7 @@ const deal = async (solutionid) => {
 
     console.log(customapis[i].customapiid);
 
-    const customapi = await schemaRequest.request(`customapis(${customapis[i].customapiid})`
+    const customapi = await schemaRequest.request(`customapis(bb83b714-8b08-f011-bae2-0017fa051230)`
       //   , {
       //   otherHeaders: {
       //     Prefer: 'odata.include-annotations="Microsoft.Dynamics.CRM.associatednavigationproperty,Microsoft.Dynamics.CRM.lookuplogicalname"'
