@@ -531,7 +531,7 @@ using ${namespace}Enums;
 
 namespace ${namespace}Entities
 {
-[DataContract]
+\t[DataContract]
 \tinternal class ${modelName}Entity : BaseEntity
 \t{
 \t\tpublic ${modelName}Entity() { }
