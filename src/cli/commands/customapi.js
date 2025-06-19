@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { deal } from '../libs/schema/deal';
+import { deal } from '../libs/customapi/deal';
 
 const command = async (args) => {
 
