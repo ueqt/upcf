@@ -5,6 +5,8 @@ const deal = async (solutionid) => {
 
   let customapis = await schemaRequest.request(`customapis`);
 
+  console.log(customapis);
+
   if(solutionid) {
     customapis = customapis.find(c => c.solutionid === solutionid);
   }
