@@ -12,6 +12,8 @@ const deal = async (solutionid) => {
 
   console.log(`solutionid: ${solutionid}, plugins: ${plugins.length}`);
 
+  console.log(`first: `, plugins[0]);
+
   const results = [];
 
   for (let i = 0; i < plugins.length; i++) {
