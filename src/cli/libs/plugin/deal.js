@@ -15,7 +15,7 @@ const deal = async (solutionid) => {
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
     let result = {
-      AssemblyName: plugin.msdyn_eventhandler.startsWith('Plugins.Plugins') ? 'Plugins' : (plugin.msdyn_eventhandler.startsWith('Philips.Crm.Plugins') ? 'Philips.Crm.Plugins' : ''), 
+      AssemblyName: plugin.msdyn_eventhandler.startsWith('Philips.Service.Plugins') ? 'Plugins' : (plugin.msdyn_eventhandler.startsWith('Philips.Crm.Plugins') ? 'Philips.Crm.Plugins' : ''), 
       TypeName: plugin.msdyn_eventhandler,
       Steps: plugin.msdyn_name,
       Mode: plugin.msdyn_isolationmode,
