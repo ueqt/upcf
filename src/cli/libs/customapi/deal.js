@@ -38,7 +38,7 @@ const deal = async (solutionid) => {
     console.log(customapi.customapiid);
 
     result.TypeName = customapi['_plugintypeid_value@OData.Community.Display.V1.FormattedValue'];
-    result.Entity = customapi['boundentitylogicalname'];
+    result.Entity = customapi['boundentitylogicalname'] || 'N/A';
     result.Developer = customapi['_createdby_value@OData.Community.Display.V1.FormattedValue'];
 
     const plugintype = await schemaRequest.request(`plugintypes(${customapi['_plugintypeid_value']})`, {
