@@ -15,11 +15,13 @@ const deal = async (solutionid) => {
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
     let result = {
-      TypeName: plugin.msdyn_name,
-      Steps: plugin.msdyn_sdkmessagename,
+      AssemblyName: plugin.msdyn_eventhandler.startsWith('Plugins.Plugins') ? 'Plugins' : (plugin.msdyn_eventhandler.startsWith('Philips.Crm.Plugins') ? 'Philips.Crm.Plugins' : ''), 
+      TypeName: plugin.msdyn_eventhandler,
+      Steps: plugin.msdyn_name,
       Mode: plugin.msdyn_isolationmode,
       Stage: plugin.msdyn_executionstage,
       Message: plugin.msdyn_sdkmessagename,
+      Entity: plugin.msdyn_name.replace(`${plugin.msdyn_eventhandler}: ${plugin.msdyn_sdkmessagename} of `, ''),
     }
 
     results.push(result);
