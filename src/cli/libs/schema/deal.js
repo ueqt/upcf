@@ -616,6 +616,8 @@ ${tests}\t}
 // <date>2025-01-01</date>
 // <summary>${modelName}Enum</summary>
 
+using System.Globalization;
+
 namespace ${namespace}Enums
 {
 ${enums}
