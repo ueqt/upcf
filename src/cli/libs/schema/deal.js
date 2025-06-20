@@ -455,22 +455,22 @@ ${opts}
 `;
     } else {
       currentEnum = `
-\t\t/// <summary>${v.OptionSet.Name.trim()}</summary>
-\t\t/// <remarks>${translate(v.OptionSet.DisplayName?.UserLocalizedLabel?.Label)}</remarks>
-\t\tpublic enum Enum${name}
-\t\t{
-\t\t\t/// <summary>null</summary>
-\t\t\tUeqtEmpty = -1,
+\t/// <summary>${v.OptionSet.Name.trim()}</summary>
+\t/// <remarks>${translate(v.OptionSet.DisplayName?.UserLocalizedLabel?.Label)}</remarks>
+\tpublic enum Enum${name}
+\t{
+\t\t/// <summary>null</summary>
+\t\tUeqtEmpty = -1,
 ${opts}
-\t\t}
+\t}
 
-\t\tpublic static class Enum${name}Extensions
+\tpublic static class Enum${name}Extensions
+\t{
+\t\tpublic static string ToCultureString(this Enum${name} e)
 \t\t{
-\t\t\t\tpublic static string ToCultureString(this Enum${name} e)
-\t\t\t\t{
-\t\t\t\t\t\t\t\treturn ((int)e).ToString(CultureInfo.InvariantCulture);
-\t\t\t\t}
+\t\t\treturn ((int)e).ToString(CultureInfo.InvariantCulture);
 \t\t}
+\t}
 `;
     }
     if (v.OptionSet.IsGlobal) {
