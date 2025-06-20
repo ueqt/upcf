@@ -2,13 +2,17 @@ import { SchemaRequest } from '../common/request';
 import { writeFileSync } from 'fs';
 
 const deal = async (solutionid) => {
-  const schemaRequest = new SchemaRequest(); 
+  const schemaRequest = new SchemaRequest();
 
-  let customapis = await schemaRequest.request(`customapis`);
+  let customapis = await schemaRequest.request(`customapis`, {
+    otherHeaders: {
+      Prefer: 'odata.include-annotations="*"'
+    }
+  });
 
   console.log(`solutionid: ${solutionid}, customapis: ${customapis.length}`);
 
-  if(solutionid) {
+  if (solutionid) {
     customapis = customapis.filter(c => c.solutionid === solutionid);
   }
 
@@ -16,33 +20,31 @@ const deal = async (solutionid) => {
 
   const results = [];
 
-  for(let i=0;i<customapis.length;i++) {
+  for (let i = 0; i < customapis.length; i++) {
+    const customapi = customapis[i];
     let result = {
-      AssemblyName: 'Plugins',
+      AssemblyName: '',
       TypeName: '',
       Steps: 'CustomAPI',
       Mode: 'Synchronous',
       Stage: 'CustomAPI',
-      Message: customapis[i].uniquename,
+      Message: customapi.uniquename,
       Entity: '',
       Description: '',
       Logic: '',
       Developer: '',
     }
 
-    console.log(customapis[i].customapiid);
-
-    const customapi = await schemaRequest.request(`customapis(${customapis[i].customapiid})`, {
-        noNeedValue: true,
-        otherHeaders: {
-          Prefer: 'odata.include-annotations="*"'
-        }
-      }
-    );
+    console.log(customapi.customapiid);
 
     result.TypeName = customapi['_plugintypeid_value@OData.Community.Display.V1.FormattedValue'];
     result.Entity = customapi['boundentitylogicalname'];
     result.Developer = customapi['_createdby_value@OData.Community.Display.V1.FormattedValue'];
+
+    const plugintype = await schemaRequest.request(`plugintypes(${customapi['_plugintypeid_value']})`, {
+      noNeedValue: true,
+    });
+    result.AssemblyName = plugintype['assemblyname'];
 
     results.push(result);
   }
