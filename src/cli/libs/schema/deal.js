@@ -432,8 +432,8 @@ ${multipleLookupSet}
 `;
       } else {
         opts += `
-\t\t\t/// <summary>${translate(o.Label.UserLocalizedLabel.Label).trim().replaceAll('TODO', 'UEQT')}</summary>
-\t\t\t${key} = ${o.Value},
+\t\t/// <summary>${translate(o.Label.UserLocalizedLabel.Label).trim().replaceAll('TODO', 'UEQT')}</summary>
+\t\t${key} = ${o.Value},
 `;
       }
     }
