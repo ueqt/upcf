@@ -10,7 +10,7 @@ const deal = async (solutionid) => {
     }
   });
 
-  console.log(`solutionid: ${solutionid}, plugins: ${customapis.length}`);
+  console.log(`solutionid: ${solutionid}, plugins: ${plugins.length}`);
 
   const results = [];
 
