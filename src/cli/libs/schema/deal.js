@@ -463,6 +463,14 @@ ${opts}
 \t\t\tUeqtEmpty = -1,
 ${opts}
 \t\t}
+
+\t\tpublic static class Enum${name}Extensions
+\t\t{
+\t\t\t\tpublic static string ToCultureString(this Enum${name} e)
+\t\t\t\t{
+\t\t\t\t\t\t\t\treturn ((int)e).ToString(CultureInfo.InvariantCulture);
+\t\t\t\t}
+\t\t}
 `;
     }
     if (v.OptionSet.IsGlobal) {
@@ -481,6 +489,8 @@ ${opts}
 // <author>Xjs</author>
 // <date>2025-01-01</date>
 // <summary>Enum${name}</summary>
+
+using System.Globalization;
 
 namespace ${namespace}Enums
 {
