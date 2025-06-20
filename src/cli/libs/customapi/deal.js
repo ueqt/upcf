@@ -30,8 +30,6 @@ const deal = async (solutionid) => {
       Stage: 'CustomAPI',
       Message: customapi.uniquename,
       Entity: '',
-      Description: '',
-      Logic: '',
       Developer: '',
     }
 
