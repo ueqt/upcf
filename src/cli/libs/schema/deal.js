@@ -464,8 +464,10 @@ ${opts}
 ${opts}
 \t}
 
+\t/// <summary></summary>
 \tpublic static class Enum${name}Extensions
 \t{
+\t\t/// <summary></summary>
 \t\tpublic static string ToCultureString(this Enum${name} e)
 \t\t{
 \t\t\treturn ((int)e).ToString(CultureInfo.InvariantCulture);
