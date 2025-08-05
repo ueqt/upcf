@@ -286,7 +286,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
           setValue = `set { entity[${name}] = new OptionSetValue((int)value); }`;
           testValue = '0';
           const found = options.find(c => c.LogicalName === v.LogicalName);
-          if (found) {
+          if (found?.OptionSet?.Options?.[0]) {
             testValue = `Enum${capitalize(found.OptionSet.Name)}.${getEnumKey(found.OptionSet.Options[0])}`;
           }
         }
