@@ -364,6 +364,8 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
     } else {
       entities += `
 \t\t#region ${name}
+\t\t/// <summary>${v.SchemaName} <c>${v.AttributeType}</c> ${targets.length > 100 ? targets.substring(0, 100) + '...' : targets}</summary>
+\t\t/// <remarks>${translate(v.DisplayName.UserLocalizedLabel?.Label)}</remarks>
 \t\tpublic const string ${name} = nameof(${name});
 \t\t/// <summary>${v.SchemaName} <c>${v.AttributeType}</c> ${targets.length > 100 ? targets.substring(0, 100) + '...' : targets}</summary>
 \t\t/// <remarks>${translate(v.DisplayName.UserLocalizedLabel?.Label)}</remarks>
