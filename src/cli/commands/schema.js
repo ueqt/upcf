@@ -8,6 +8,7 @@ const command = async (args) => {
   let cleanMode = false;
   let searchPath = '';
   let namespace = '';
+  let enumWithValue = false;
 
   console.log(chalk.bgGreenBright("args"), args);
   
@@ -30,6 +31,10 @@ const command = async (args) => {
     }
     searchPath = args.searchpath;
   }
+  if(args.enumWithValue) {
+    console.log(chalk.bgCyanBright('Enum With Value'));
+    enumWithValue = true;
+  }
   const [_, codeType, ...logicalNames] = args['_'];
   console.log(`codeType: ${codeType}`);
 
@@ -47,7 +52,7 @@ const command = async (args) => {
     const statecodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
     const statuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
     const picklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=1033`);
-    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, cleanMode, args.path, searchPath, namespace);
+    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, cleanMode, args.path, searchPath, namespace, enumWithValue);
   }
 
 };

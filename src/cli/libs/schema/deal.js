@@ -12,8 +12,9 @@ import { resolve, join } from 'path';
  * @param {string} relativePath 生成的相对路径
  * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
  * @param {string} namespace cs模式下的命名空间前缀
+ * @param {boolean} enumWithValue 枚举是否带值
  */
-const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath, namespace) => {
+const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -287,7 +288,7 @@ const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePa
           testValue = '0';
           const found = options.find(c => c.LogicalName === v.LogicalName);
           if (found?.OptionSet?.Options?.[0]) {
-            testValue = `Enum${capitalize(found.OptionSet.Name)}.${getEnumKey(found.OptionSet.Options[0])}`;
+            testValue = `Enum${capitalize(found.OptionSet.Name)}.${getEnumKey(found.OptionSet.Options[0], enumWithValue)}`;
           }
         }
         break;
@@ -424,7 +425,7 @@ ${multipleLookupSet}
       if(o.Label.UserLocalizedLabel.Label.includes('(TBD)')) {
         continue;
       }
-      let key = getEnumKey(o);
+      let key = getEnumKey(o, enumWithValue);
       if (codeType === 'ts') {
         opts += `
 \t/**

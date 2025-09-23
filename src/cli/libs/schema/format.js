@@ -42,10 +42,14 @@ const capitalize = (str) => {
 /**
  * get enum key from enum object
  * @param {*} o Enum thing
+ * @param {boolean} enumWithValue 枚举是否带值
  * @returns {string} key
  */
-const getEnumKey = (o) => {
-  let key = o.Label.UserLocalizedLabel.Label.replace(/[^a-z0-9\u4e00-\u9fa5]/gi, '') + '_' + o.Value; // 字母，数字，中文，防止label相同值不同，所以带上value吧
+const getEnumKey = (o, enumWithValue) => {
+  let key = o.Label.UserLocalizedLabel.Label.replace(/[^a-z0-9\u4e00-\u9fa5]/gi, '')
+  if(enumWithValue) {
+    key = key + '_' + o.Value; // 字母，数字，中文，防止label相同值不同，所以带上value吧
+  }
   if (48 <= key.charCodeAt(0) && key.charCodeAt(0) <= 57) {
     key = 'Enum' + key;
   }
