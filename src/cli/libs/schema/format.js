@@ -106,7 +106,7 @@ const findUsed = (searchPath, searchString, ignorePath) => {
       return false;
     }
     for(let i=0;i<ignorePath.length;i++) {
-      if(dirent.path.startsWith(ignorePath[i])) {
+      if(dirent.parentPath.startsWith(ignorePath[i])) {
         return false;
       }
     }
