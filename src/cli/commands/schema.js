@@ -48,11 +48,12 @@ const command = async (args) => {
 
   for (const logicalName of logicalNames) {
     console.log(`===== ${logicalName} =====`);
+    const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes?$select=LogicalCollectionName`)).LogicalCollectionName;
     const attrs = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes?LabelLanguages=1033`);
     const statecodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
     const statuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
     const picklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=1033`);
-    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, cleanMode, args.path, searchPath, namespace, enumWithValue);
+    await deal(codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
   }
 
 };

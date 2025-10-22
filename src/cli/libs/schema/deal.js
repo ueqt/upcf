@@ -8,13 +8,14 @@ import { resolve, join } from 'path';
  * @param {*} attrs 
  * @param {*} options 
  * @param {string} logicalName 实体逻辑名
+ * @param {string} logicalCollectionName 实体逻辑集合名
  * @param {boolean} cleanMode 干净模式，会根据实际的使用情况，过滤掉未使用的字段(Enum暂时没处理)
  * @param {string} relativePath 生成的相对路径
  * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
  * @param {string} namespace cs模式下的命名空间前缀
  * @param {boolean} enumWithValue 枚举是否带值
  */
-const deal = async (codeType, attrs, options, logicalName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
+const deal = async (codeType, attrs, options, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -524,6 +525,8 @@ import { BaseEntity } from "upcf/Data/BaseEntity";
 export class ${modelName}Entity extends BaseEntity {
 \tstatic readonly LogicalName = '${logicalName}';
 \toverride EntityLogicalName: string = ${modelName}Entity.LogicalName;
+\tstatic readonly LogicalCollectionName = '${logicalCollectionName}';
+\toverride EntityLogicalCollectionName: string = ${modelName}Entity.LogicalCollectionName;
 ${entities}
 }
 ${enums}
@@ -558,6 +561,8 @@ namespace ${namespace}Entities
 \t\t}
 \t\tpublic const string LogicalName = "${logicalName}";
 \t\tpublic override string EntityLogicalName => LogicalName;
+\t\tpublic const string LogicalCollectionName = "${logicalCollectionName}";
+\t\tpublic override string EntityLogicalCollectionName => LogicalCollectionName;
 ${entities}
 \t}
 }  
