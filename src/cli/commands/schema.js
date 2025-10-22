@@ -48,7 +48,7 @@ const command = async (args) => {
 
   for (const logicalName of logicalNames) {
     console.log(`===== ${logicalName} =====`);
-    const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')?$select=LogicalCollectionName`)).LogicalCollectionName;
+    const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
     const attrs = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes?LabelLanguages=1033`);
     const statecodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
     const statuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
