@@ -7,6 +7,7 @@ import { resolve, join } from 'path';
  * @param {'ts' | 'cs'} codeType 文件类型(typescript/C#)
  * @param {*} attrs 
  * @param {*} options 
+ * @param {*} schemaRequest 微软crm api请求对象
  * @param {string} logicalName 实体逻辑名
  * @param {string} logicalCollectionName 实体逻辑集合名
  * @param {boolean} cleanMode 干净模式，会根据实际的使用情况，过滤掉未使用的字段(Enum暂时没处理)
@@ -15,7 +16,7 @@ import { resolve, join } from 'path';
  * @param {string} namespace cs模式下的命名空间前缀
  * @param {boolean} enumWithValue 枚举是否带值
  */
-const deal = async (codeType, attrs, options, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
+const deal = async (schemaRequest, codeType, attrs, options, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -204,8 +205,9 @@ const deal = async (codeType, attrs, options, logicalName, logicalCollectionName
 \t\t}
 \t}`;
           if (v.Targets && v.Targets.length === 1) {
+            const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
             setValue = `set ${cleanName}(value: string) {
-\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${v.Targets[0]}s(' + value + ')';    
+\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';    
 \t}
 `;
           } else {
