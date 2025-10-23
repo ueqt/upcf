@@ -348,6 +348,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       entities += `
 \t//#region ${name}
 \tpublic static readonly _${name} = '${name}';
+\tpublic static readonly _key_${name} = '${cleanName}';
 \t/** 
 \t * ${v.SchemaName} 
 \t * @typedef ${v.AttributeType}
