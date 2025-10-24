@@ -207,7 +207,8 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
           if (v.Targets && v.Targets.length === 1) {
             const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
             setValue = `set ${cleanName}(value: string) {
-\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';    
+\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';  
+\t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;    
 \t}
 `;
           } else {
