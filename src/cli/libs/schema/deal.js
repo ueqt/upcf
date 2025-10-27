@@ -212,7 +212,14 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
 \t}
 `;
           } else {
-            setValue = `// NOREF: set ${cleanName}(value: string)`;
+            // setValue = `// NOREF: set ${cleanName}(value: string)`;
+            // 多个lookup
+            setValue = `      
+\tsetLookupValue${cleanName} = (entityLogicCollectionName: string, value: string) => { 
+\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${entityLogicCollectionName}(' + value + ')';  
+\t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
+\t}
+`;
           }
         } else {
           type = 'Guid';
