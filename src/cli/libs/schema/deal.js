@@ -216,7 +216,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
             // 多个lookup
             setValue = `      
 \tsetLookupValue${cleanName} = (entityLogicCollectionName: string, value: string) => { 
-\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${entityLogicCollectionName}(' + value + ')';  
+\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
 \t}
 `;
