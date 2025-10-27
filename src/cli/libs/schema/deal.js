@@ -207,7 +207,9 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
           if (v.Targets && v.Targets.length === 1) {
             const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
             setValue = `set ${cleanName}(value: string) {
-\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';  
+\t\tif(value !== null && value !== undefined) {
+\t\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';
+\t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;    
 \t}
 `;
@@ -216,7 +218,9 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
             // 多个lookup
             setValue = `      
 \tsetLookupValue${cleanName} = (entityLogicCollectionName: string, value: string) => { 
-\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
+\t\tif(value !== null && value !== undefined) {
+\t\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
+\t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
 \t}
 `;
