@@ -217,9 +217,9 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
             // setValue = `// NOREF: set ${cleanName}(value: string)`;
             // 多个lookup
             setValue = `      
-\tsetLookupValue${cleanName} = (entityLogicCollectionName: string, value: string) => { 
+\tsetLookupValue${cleanName} = (entityLogicName: string, entityLogicCollectionName: string, value: string) => { 
 \t\tif(value !== null && value !== undefined) {
-\t\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
+\t\t\tthis.entity[${modelName}Entity._${name} + '_' + entityLogicName + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
 \t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
 \t}
