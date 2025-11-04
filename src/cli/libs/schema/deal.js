@@ -323,14 +323,57 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       // case 'String':
       // case 'EntityName':
       case 'Virtual':
-        // Image
-        type = 'string';
-        method = 'GetStringValue';
-        if (codeType === 'ts') {
-          // Not implementation
+        if(v.AttributeTypeName?.Value === 'MultiSelectPicklistType') {
+          if(codeType === 'ts') {
+            type = 'number';
+            // const found = options.find(c => c.LogicalName === v.LogicalName);
+            // if (found) {
+            //   type = `Enum${capitalize(found.OptionSet.Name)}`;
+            // }
+            getValue = `get ${cleanName}(): ${type} {
+  \t\tif(this.prefix) {
+  \t\t\treturn this.entity?.[this.prefix + '.' + ${modelName}Entity._${name}];
+  \t\t} else {
+  \t\t\treturn this.entity?.[${modelName}Entity._${name}];
+  \t\t}
+  \t}
+  \t/** 
+  \t * ${v.SchemaName} FormattedValue
+  \t * @typedef ${v.AttributeType}
+  \t * @memberof${targets}
+  \t * @description ${translate(v.DisplayName.UserLocalizedLabel?.Label)}
+  \t * @return string
+  \t */
+  \tget ${cleanName}Name(): string {
+  \t\tif(this.prefix) {
+  \t\t\treturn this.entity?.[this.prefix + '.' + ${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'];
+  \t\t} else {
+  \t\t\treturn this.entity?.[${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'];
+  \t\t}
+  \t}
+  \tset${cleanName}Name = (v: string) => {
+  \t\tthis.entity[${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'] = v;
+  \t}`;
+          } else {
+            type = 'int';
+            method = 'GetOptionValue';
+            setValue = `set { entity[${name}] = new OptionSetValue((int)value); }`;
+            testValue = '0';
+            const found = options.find(c => c.LogicalName === v.LogicalName);
+            if (found?.OptionSet?.Options?.[0]) {
+              testValue = `Enum${capitalize(found.OptionSet.Name)}.${getEnumKey(found.OptionSet.Options[0], enumWithValue)}`;
+            }
+          }
         } else {
-          getValue = `get { return this.GetVirtualValue(${name}); }`;
-          setValue = `set { if(!string.IsNullOrWhiteSpace(value)) { entity[${name}] = Convert.FromBase64String(value); } }`;
+          // Image
+          type = 'string';
+          method = 'GetStringValue';
+          if (codeType === 'ts') {
+            // Not implementation
+          } else {
+            getValue = `get { return this.GetVirtualValue(${name}); }`;
+            setValue = `set { if(!string.IsNullOrWhiteSpace(value)) { entity[${name}] = Convert.FromBase64String(value); } }`;
+          }
         }
         break;
       default:
