@@ -82,6 +82,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
 
     addJsonOutput(jsonOutput, 'includes', v);
     
+    let namekey = '';
     let type = 'string';
     let method = 'GetStringValue';
     let setValue = '';
@@ -105,6 +106,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       case 'DateTime':
         if (codeType === 'ts') {
           type = 'string';
+          namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
           getValue = `get ${cleanName}(): ${type} {
 \t\tif(this.prefix) {
 \t\t\treturn this.entity?.[this.prefix + '.' + ${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'];
@@ -169,6 +171,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       case 'Lookup':
       case 'Owner':
         if (codeType === 'ts') {
+          namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
           type = 'string';
           if (v.Targets) {
             targets = v.Targets.join(',');
@@ -267,6 +270,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       case 'Status':
         if (codeType === 'ts') {
           // 判断enum类型
+          namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
           type = 'number';
           const found = options.find(c => c.LogicalName === v.LogicalName);
           if (found) {
@@ -325,6 +329,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
       case 'Virtual':
         if(v.AttributeTypeName?.Value === 'MultiSelectPicklistType') {
           if(codeType === 'ts') {
+            namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
             type = 'number';
             // const found = options.find(c => c.LogicalName === v.LogicalName);
             // if (found) {
@@ -404,6 +409,7 @@ const deal = async (schemaRequest, codeType, attrs, options, logicalName, logica
 \t//#region ${name}
 \tpublic static readonly _${name} = '${name}';
 \tpublic static readonly _key_${name} = '${cleanName}';
+${namekey}
 \t/** 
 \t * ${v.SchemaName} 
 \t * @typedef ${v.AttributeType}
