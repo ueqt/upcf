@@ -51,9 +51,12 @@ const command = async (args) => {
     const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
     const attrs = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes?LabelLanguages=1033`);
     const statecodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
+    const chineseStatecodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StateAttributeMetadata?$expand=OptionSet&LabelLanguages=2052`);
     const statuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=1033`);
+    const chineseStatuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=2052`);
     const picklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=1033`);
-    await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
+    const chinesePicklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=2052`);
+    await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], [...chineseStatecodeOptions, ...chineseStatuscodeOptions, ...chinesePicklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
   }
 
 };

@@ -7,6 +7,7 @@ import { resolve, join } from 'path';
  * @param {'ts' | 'cs'} codeType 文件类型(typescript/C#)
  * @param {*} attrs 
  * @param {*} options 
+ * @param {*} chineseOptions 中文选项
  * @param {*} schemaRequest 微软crm api请求对象
  * @param {string} logicalName 实体逻辑名
  * @param {string} logicalCollectionName 实体逻辑集合名
@@ -16,7 +17,7 @@ import { resolve, join } from 'path';
  * @param {string} namespace cs模式下的命名空间前缀
  * @param {boolean} enumWithValue 枚举是否带值
  */
-const deal = async (schemaRequest, codeType, attrs, options, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
+const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -482,7 +483,10 @@ ${multipleLookupSet}
     }
     allOptionNames.push(name);
 
+    const chineseV = chineseOptions.find(c => c.LogicalName === v.LogicalName);
+
     let opts = '';
+    let chineseOpts = '';
     for (const o of v.OptionSet.Options) {
       if (!o.Label.UserLocalizedLabel) {
         continue;
@@ -498,6 +502,15 @@ ${multipleLookupSet}
 \t */
 \t${key} = ${o.Value},
 `;
+        const chineseO = chineseV?.OptionSet?.Options?.find(o2 => o2.Value === o.Value);
+        if(chineseO) {
+          chineseOpts += `
+\t/**
+\t * ${translate(o.Label.UserLocalizedLabel.Label)}
+\t */
+\t${o.Value}: '${chineseO.Label.UserLocalizedLabel.Label}',
+`;
+        }
       } else {
         opts += `
 \t\t/// <summary>${translate(o.Label.UserLocalizedLabel.Label).trim().replaceAll('TODO', 'UEQT')}</summary>
@@ -519,7 +532,15 @@ ${multipleLookupSet}
 export enum Enum${name}
 {
 ${opts}
-}
+};
+
+/** 
+* ${v.OptionSet.Name} 中文映射
+* @description ${translate(chineseV?.OptionSet?.DisplayName?.UserLocalizedLabel?.Label)}
+*/
+export const EnumChineseMap${name}: { [key: number]: string } = {
+${chineseOpts}
+};
 `;
     } else {
       currentEnum = `
