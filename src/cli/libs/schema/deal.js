@@ -503,12 +503,12 @@ ${multipleLookupSet}
 \t${key} = ${o.Value},
 `;
         const chineseO = chineseV?.OptionSet?.Options?.find(o2 => o2.Value === o.Value);
-        if(chineseO) {
+        if(chineseO?.Label?.LocalizedLabels && chineseO?.Label?.LocalizedLabels.length > 0) {
           chineseOpts += `
 \t/**
 \t * ${translate(o.Label.UserLocalizedLabel.Label)}
 \t */
-\t${o.Value}: '${chineseO.Label.UserLocalizedLabel.Label}',
+\t${o.Value}: '${chineseO.Label.LocalizedLabels[0].Label}',
 `;
         }
       } else {
@@ -533,7 +533,9 @@ export enum Enum${name}
 {
 ${opts}
 };
-
+`;
+      if(chineseOpts) {
+        currentEnum += `
 /** 
 * ${v.OptionSet.Name} 中文映射
 * @description ${translate(chineseV?.OptionSet?.DisplayName?.UserLocalizedLabel?.Label)}
@@ -542,6 +544,7 @@ export const EnumChineseMap${name}: { [key: number]: string } = {
 ${chineseOpts}
 };
 `;
+      }
     } else {
       currentEnum = `
 \t/// <summary>${v.OptionSet.Name.trim()}</summary>
