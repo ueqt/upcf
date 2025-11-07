@@ -508,14 +508,14 @@ ${multipleLookupSet}
 \t/**
 \t * ${translate(o.Label.UserLocalizedLabel.Label)}
 \t */
-\t${o.Value}: '${chineseO.Label.LocalizedLabels[0].Label}',
+\t${o.Value}: \`${chineseO.Label.LocalizedLabels[0].Label}\`,
 `;
         } else {
           chineseOpts += `
 \t/**
 \t * ${translate(o.Label.UserLocalizedLabel.Label)}
 \t */
-\t${o.Value}: '${o.Label.UserLocalizedLabel.Label}',
+\t${o.Value}: \`${o.Label.UserLocalizedLabel.Label}\`,
 `;
         }
       } else {
