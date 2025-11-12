@@ -46,6 +46,9 @@ const command = async (args) => {
     namespace = args.namespace;
   }
 
+  let indexEntitiesTs = '';
+  let indexEnumsTs = '';
+
   for (const logicalName of logicalNames) {
     console.log(`===== ${logicalName} =====`);
     const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
@@ -56,9 +59,25 @@ const command = async (args) => {
     const chineseStatuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=2052`);
     const picklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=1033`);
     const chinesePicklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=2052`);
-    await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], [...chineseStatecodeOptions, ...chineseStatuscodeOptions, ...chinesePicklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
+    const generatedFileNames = await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], [...chineseStatecodeOptions, ...chineseStatuscodeOptions, ...chinesePicklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
+    if(codeType === 'ts') {
+      for(let i=0;i<generatedFileNames.entities.length;i++) {
+        indexEntitiesTs += `export * from './${generatedFileNames.entities[i].replace('.ts', '')}';\n`;
+      }
+      for(let i=0;i<generatedFileNames.enums.length;i++) {
+        indexEnumsTs += `export * from './${generatedFileNames.enums[i].replace('.ts', '')}';\n`;
+      }
+    }
   }
 
+  if(codeType === 'ts') {
+    if(indexEntitiesTs) {
+      writeFileSync(resolve(join(relativePath, 'Entities', 'index.ts')), indexEntitiesTs, { encoding: 'utf-8' });
+    }
+    if(indexEnumsTs) {
+      writeFileSync(resolve(join(relativePath, 'Enums', 'index.ts')), indexEnumsTs, { encoding: 'utf-8' });
+    }
+  }
 };
 
 export { command };

@@ -16,6 +16,7 @@ import { resolve, join } from 'path';
  * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
  * @param {string} namespace cs模式下的命名空间前缀
  * @param {boolean} enumWithValue 枚举是否带值
+ * @returns {string[]} 生成的文件名列表
  */
 const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
   let enums = '';
@@ -23,6 +24,11 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
   let tests = '';
   let imports = '';
   let modelName = capitalize(logicalName);
+
+  let generatedFileNames = {
+    entities: [],
+    enums: [],
+  };
 
   // 日期写死，防止每次更新生成一堆变化
 
@@ -602,6 +608,7 @@ namespace ${namespace}Enums
       console.log(resolve(`${filePath}/${fileName}`));
       mkdirSync(resolve(filePath), { recursive: true });
       writeFileSync(resolve(`${filePath}/${fileName}`), fileData, { encoding: 'utf-8' });
+      generatedFileNames.enums.push(fileName);
       continue;
     } else {
       // 局部枚举
@@ -709,6 +716,7 @@ ${tests}\t}
   console.log(resolve(`${filePath}/${fileName}`));
   mkdirSync(resolve(filePath), { recursive: true });
   writeFileSync(resolve(`${filePath}/${fileName}`), result, { encoding: 'utf-8' });
+  generatedFileNames.entities.push(fileName);
 
   if (codeType === 'cs' && enums) {
     // Enum
@@ -732,7 +740,9 @@ ${enums}
     console.log(resolve(`${filePath}/${fileName}`));
     mkdirSync(resolve(filePath), { recursive: true });
     writeFileSync(resolve(`${filePath}/${fileName}`), result, { encoding: 'utf-8' });
+    generatedFileNames.entities.push(fileName);
   }
+  return generatedFileNames;
 }
 
 export { deal };
