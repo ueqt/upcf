@@ -74,10 +74,10 @@ const command = async (args) => {
 
   if(codeType === 'ts') {
     if(indexEntitiesTs) {
-      writeFileSync(resolve(join(relativePath, 'Entities', 'index.ts')), indexEntitiesTs, { encoding: 'utf-8' });
+      writeFileSync(resolve(join(args.path, 'Entities', 'index.ts')), indexEntitiesTs, { encoding: 'utf-8' });
     }
     if(indexEnumsTs) {
-      writeFileSync(resolve(join(relativePath, 'Enums', 'index.ts')), indexEnumsTs, { encoding: 'utf-8' });
+      writeFileSync(resolve(join(args.path, 'Enums', 'index.ts')), indexEnumsTs, { encoding: 'utf-8' });
     }
   }
 };
