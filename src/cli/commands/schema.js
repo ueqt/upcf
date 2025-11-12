@@ -1,4 +1,6 @@
 import { SchemaRequest } from '../libs/common/request';
+import { writeFileSync } from 'fs';
+import { resolve, join } from 'path';
 import chalk from 'chalk';
 import { deal } from '../libs/schema/deal';
 
