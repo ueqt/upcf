@@ -293,7 +293,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
 \t/** 
 \t * ${v.SchemaName} FormattedValue
 \t * @typedef ${v.AttributeType}
-\t * @memberof${targets}
+\t * @memberof ${targets}
 \t * @description ${translate(v.DisplayName.UserLocalizedLabel?.Label)}
 \t * @return string
 \t */
@@ -352,7 +352,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
   \t/** 
   \t * ${v.SchemaName} FormattedValue
   \t * @typedef ${v.AttributeType}
-  \t * @memberof${targets}
+  \t * @memberof ${targets}
   \t * @description ${translate(v.DisplayName.UserLocalizedLabel?.Label)}
   \t * @return string
   \t */
@@ -420,7 +420,7 @@ ${namekey}
 \t/** 
 \t * ${v.SchemaName} 
 \t * @typedef ${v.AttributeType}
-\t * @memberof${targets}
+\t * @memberof ${targets}
 \t * @description ${translate(v.DisplayName.UserLocalizedLabel?.Label)}
 \t * @return ${type}
 \t */
