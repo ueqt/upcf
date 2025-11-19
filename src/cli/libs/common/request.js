@@ -72,7 +72,7 @@ class SchemaRequest {
     const options = {
       method: method,
       headers: headers,
-      body: !body ? undefined : (headers.content === 'application/octet-stream' ? body : JSON.stringify(body))
+      body: !body ? undefined : ((headers.content === 'application/octet-stream' || headers['Content-Type'] === 'application/octet-stream') ? body : JSON.stringify(body))
     };
 
     // console.log(options);
