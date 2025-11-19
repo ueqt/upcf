@@ -23,7 +23,7 @@ const deal = async (schemaRequest, type, filetype,webfileid) => {
   const filePath = path.join(distDir, sourceFileName);
 
   // 2. Read file content
-  const fileContent = fs.readFileSync(filePath, { encoding: 'base64' });
+  const fileContent = fs.readFileSync(filePath);
 
   // 3. Upload the file
   const uploadUrl = `powerpagecomponents(${webfileid})/filecontent?x-ms-file-name=${sourceFileName}`;
@@ -33,7 +33,10 @@ const deal = async (schemaRequest, type, filetype,webfileid) => {
   try {
       await schemaRequest.request(uploadUrl, {
           method: 'PATCH',
-          body: { content: fileContent },
+          body: fileContent,
+          otherHeaders: {
+            'Content-Type': `application/octet-stream`
+          },
           noNeedValue: true
       });
   } catch (error) {
