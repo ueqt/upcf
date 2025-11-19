@@ -23,7 +23,7 @@ const deal = async (schemaRequest, type, filetype,webfileid) => {
   const filePath = path.join(distDir, sourceFileName);
 
   // 2. Read file content
-  const fileContent = fs.readFileSync(filePath);
+  const fileContent = fs.readFileSync(filePath, {encoding: 'utf-8'});
 
   // 3. Upload the file
   const uploadUrl = `powerpagecomponents(${webfileid})/filecontent?x-ms-file-name=${sourceFileName}`;
