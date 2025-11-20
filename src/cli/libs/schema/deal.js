@@ -416,6 +416,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
 \t//#region ${name}
 \tpublic static readonly _${name} = '${name}';
 \tpublic static readonly _key_${name} = '${cleanName}';
+\tpublic get _LogicalName${cleanName} () { return '${name}'; }
 ${namekey}
 \t/** 
 \t * ${v.SchemaName} 
