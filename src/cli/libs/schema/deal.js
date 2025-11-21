@@ -182,7 +182,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
           namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
           const result = await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=PrimaryNameAttribute`, {noNeedValue: true});
           const primaryNameAttribute = result.PrimaryNameAttribute;
-          getOrder = `\tpublic static _GetOrder_${name}(desc: boolean = false) { return \`<link-entity name="${v.Targets[0]}" from="${v.Targets[0]}id" to="${name}"><order attribute="${primaryNameAttribute}" descending="\$\{desc\}"/></link-entity>\`; }`;
+          getOrder = `\tpublic static _GetOrder_${cleanName}(desc: boolean = false) { return \`<link-entity name="${v.Targets[0]}" from="${v.Targets[0]}id" to="${name}"><order attribute="${primaryNameAttribute}" descending="\$\{desc\}"/></link-entity>\`; }\n`;
           type = 'string';
           if (v.Targets) {
             targets = v.Targets.join(',');
@@ -421,8 +421,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
 \tpublic static readonly _${name} = '${name}';
 \tpublic static readonly _key_${name} = '${cleanName}';
 \tpublic static _GetLogicalName_${cleanName}() { return '${name}'; }
-${getOrder}
-${namekey}
+${getOrder}${namekey}
 \t/** 
 \t * ${v.SchemaName} 
 \t * @typedef ${v.AttributeType}
