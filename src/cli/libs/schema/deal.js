@@ -180,7 +180,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
       case 'Owner':
         if (codeType === 'ts') {
           namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
-          const result = await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=PrimaryNameAttribute`);
+          const result = await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=PrimaryNameAttribute`, {noNeedValue: true});
           const primaryNameAttribute = result.PrimaryNameAttribute;
           getOrder = `\tpublic static _GetOrder_${name}(desc: boolean = false) { return \`<link-entity name="${v.Targets[0]}" from="${v.Targets[0]}id" to="${name}"><order attribute="${primaryNameAttribute}" descending="\$\{desc\}"/></link-entity>\`; }`;
           type = 'string';
