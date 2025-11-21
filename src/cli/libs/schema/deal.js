@@ -16,9 +16,10 @@ import { resolve, join } from 'path';
  * @param {string} searchPath 搜索有没有使用过时的文件路径(只有cleanMode使用)
  * @param {string} namespace cs模式下的命名空间前缀
  * @param {boolean} enumWithValue 枚举是否带值
+ * @param {boolean} useOrder 是否使用Order属性
  * @returns {string[]} 生成的文件名列表
  */
-const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue) => {
+const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, logicalName, logicalCollectionName, cleanMode, relativePath, searchPath, namespace, enumWithValue, useOrder) => {
   let enums = '';
   let entities = '';
   let tests = '';
@@ -180,9 +181,12 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
       case 'Owner':
         if (codeType === 'ts') {
           namekey = `\tpublic static readonly _key_${name}_name = '${cleanName}Name';`;
-          const result = await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=PrimaryNameAttribute`, {noNeedValue: true});
-          const primaryNameAttribute = result.PrimaryNameAttribute;
-          getOrder = `\tpublic static _GetOrder_${cleanName}(desc: boolean = false) { return \`<link-entity name="${v.Targets[0]}" from="${v.Targets[0]}id" to="${name}"><order attribute="${primaryNameAttribute}" descending="\$\{desc\}"/></link-entity>\`; }\n`;
+          if(useOrder) {
+            // 这个生成会比较慢，所以默认不开启
+            const result = await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=PrimaryNameAttribute`, {noNeedValue: true});
+            const primaryNameAttribute = result.PrimaryNameAttribute;
+            getOrder = `\tpublic static _GetOrder_${cleanName}(desc: boolean = false) { return \`<link-entity name="${v.Targets[0]}" from="${v.Targets[0]}id" to="${name}"><order attribute="${primaryNameAttribute}" descending="\$\{desc\}"/></link-entity>\`; }\n`;
+          }
           type = 'string';
           if (v.Targets) {
             targets = v.Targets.join(',');

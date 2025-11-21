@@ -11,6 +11,7 @@ const command = async (args) => {
   let searchPath = '';
   let namespace = '';
   let enumWithValue = false;
+  let useOrder = false;
 
   console.log(chalk.bgGreenBright("args"), args);
   
@@ -37,6 +38,10 @@ const command = async (args) => {
     console.log(chalk.bgCyanBright('Enum With Value'));
     enumWithValue = true;
   }
+  if(args.useOrder) {
+    console.log(chalk.bgCyanBright('Use Order'));
+    useOrder = true;
+  }
   const [_, codeType, ...logicalNames] = args['_'];
   console.log(`codeType: ${codeType}`);
 
@@ -61,7 +66,7 @@ const command = async (args) => {
     const chineseStatuscodeOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.StatusAttributeMetadata?$expand=OptionSet&LabelLanguages=2052`);
     const picklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=1033`);
     const chinesePicklistOptions = await schemaRequest.request(`EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata?$select=LogicalName&$expand=OptionSet,GlobalOptionSet&LabelLanguages=2052`);
-    const generatedFileNames = await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], [...chineseStatecodeOptions, ...chineseStatuscodeOptions, ...chinesePicklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue);
+    const generatedFileNames = await deal(schemaRequest, codeType, attrs, [...statecodeOptions, ...statuscodeOptions, ...picklistOptions], [...chineseStatecodeOptions, ...chineseStatuscodeOptions, ...chinesePicklistOptions], logicalName, logicalCollectionName, cleanMode, args.path, searchPath, namespace, enumWithValue, useOrder);
     if(codeType === 'ts') {
       for(let i=0;i<generatedFileNames.entities.length;i++) {
         indexEntitiesTs += `export * from './${generatedFileNames.entities[i].replace('.ts', '')}';\n`;
