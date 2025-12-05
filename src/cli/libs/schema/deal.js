@@ -123,6 +123,11 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
 \t\t\treturn this.entity?.[${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'];
 \t\t}
 \t}`;
+          setValue = `set ${cleanName}(value: ${type}) {
+\t\tthis.entity[${modelName}Entity._${name}] = value;
+\t\tthis.entity[${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'] = value;
+\t}
+`;
         } else {
           type = 'DateTime?';
           method = 'GetTimeValueWithNull';
