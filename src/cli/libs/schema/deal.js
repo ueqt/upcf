@@ -230,7 +230,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
           if (v.Targets && v.Targets.length === 1) {
             const logicalCollectionName = (await schemaRequest.request(`EntityDefinitions(LogicalName='${v.Targets[0]}')?$select=LogicalCollectionName`, {noNeedValue: true})).LogicalCollectionName;
             setValue = `set ${cleanName}(value: string) {
-\t\tif(value) {
+\t\tif(value !== null && value !== undefined) {
 \t\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';
 \t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;    
@@ -241,7 +241,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
             // 多个lookup
             setValue = `      
 \tsetLookupValue${cleanName} = (entityLogicName: string, entityLogicCollectionName: string, value: string) => { 
-\t\tif(value) {
+\t\tif(value !== null && value !== undefined) {
 \t\t\tthis.entity[${modelName}Entity._${name} + '_' + entityLogicName + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
 \t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
