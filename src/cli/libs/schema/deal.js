@@ -232,8 +232,6 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
             setValue = `set ${cleanName}(value: string) {
 \t\tif(value) {
 \t\t\tthis.entity[${modelName}Entity._${name} + '@odata.bind'] = '/${logicalCollectionName}(' + value + ')';
-\t\t} else {
-\t\t\tthis.entity[${modelName}Entity._${name}] = null;
 \t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;    
 \t}
@@ -245,8 +243,6 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
 \tsetLookupValue${cleanName} = (entityLogicName: string, entityLogicCollectionName: string, value: string) => { 
 \t\tif(value) {
 \t\t\tthis.entity[${modelName}Entity._${name} + '_' + entityLogicName + '@odata.bind'] = '/' + entityLogicCollectionName + '(' + value + ')';  
-\t\t} else {
-\t\t\tthis.entity[${modelName}Entity._${name}] = null;
 \t\t}
 \t\tthis.entity['_' + ${modelName}Entity._${name} + '_value'] = value;
 \t}
