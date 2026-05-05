@@ -323,7 +323,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         } else {
           type = 'int';
           method = 'GetOptionValue';
-          setValue = `set { entity[${name}] = new OptionSetValue((int)value); }`;
+          setValue = `set { entity[${name}] = (value == null ? null : new OptionSetValue((int)value.Value)); }`;
           testValue = '0';
           const found = options.find(c => c.LogicalName === v.LogicalName);
           if (found?.OptionSet?.Options?.[0]) {
@@ -382,7 +382,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
           } else {
             type = 'int';
             method = 'GetOptionValue';
-            setValue = `set { entity[${name}] = new OptionSetValue((int)value); }`;
+            setValue = `set { entity[${name}] = (value == null ? null : new OptionSetValue((int)value.Value)); }`;
             testValue = '0';
             const found = options.find(c => c.LogicalName === v.LogicalName);
             if (found?.OptionSet?.Options?.[0]) {
@@ -578,8 +578,6 @@ ${chineseOpts}
 \t/// <remarks>${translate(v.OptionSet.DisplayName?.UserLocalizedLabel?.Label)}</remarks>
 \tpublic enum Enum${name}
 \t{
-\t\t/// <summary>null</summary>
-\t\tUeqtEmpty = -1,
 ${opts}
 \t}
 
