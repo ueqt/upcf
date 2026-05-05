@@ -380,7 +380,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
   \t\tthis.entity[${modelName}Entity._${name} + '@OData.Community.Display.V1.FormattedValue'] = v;
   \t}`;
           } else {
-            type = 'int';
+            type = 'int?';
             method = 'GetOptionValue';
             setValue = `set { entity[${name}] = (value == null ? null : new OptionSetValue((int)value.Value)); }`;
             testValue = '0';
