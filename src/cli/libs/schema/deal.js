@@ -138,7 +138,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         if (codeType === 'ts') {
           type = 'number | null';
         } else {
-          type = 'decimal';
+          type = 'decimal?';
           method = 'GetDecimalValue';
           testValue = '0';
         }
@@ -147,7 +147,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         if (codeType === 'ts') {
           type = 'number | null';
         } else {
-          type = 'decimal';
+          type = 'decimal?';
           method = 'GetMoneyValue';
           setValue = `set { entity[${name}] = new Money(value); }`;
           testValue = '0';
@@ -157,7 +157,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         if (codeType === 'ts') {
           type = 'number | null';
         } else {
-          type = 'double';
+          type = 'double?';
           method = 'GetFloatingPointNumber';
           testValue = '0';
         }
@@ -167,7 +167,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         if (codeType === 'ts') {
           type = 'number | null';
         } else {
-          type = 'int';
+          type = 'int?';
           method = 'GetWholeNumberValue';
           testValue = '0';
         }
