@@ -414,6 +414,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
       if (found) {
         type = `Enum${capitalize(found.OptionSet.Name)}`;
         if (codeType === 'cs') {
+          type = `Enum${capitalize(found.OptionSet.Name)}?`;
           getValue = `get { return (${type})this.${method}(${name}); }`;
         }
       }
