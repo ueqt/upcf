@@ -149,7 +149,7 @@ const deal = async (schemaRequest, codeType, attrs, options, chineseOptions, log
         } else {
           type = 'decimal?';
           method = 'GetMoneyValue';
-          setValue = `set { entity[${name}] = new Money(value); }`;
+          setValue = `set { entity[${name}] = (value == null ? null : new Money(value.Value)); }`;
           testValue = '0';
         }
         break;
